@@ -1,0 +1,12 @@
+$dokka.format:html
+$dokka.linkExtension:html
+$dokka.location:io.geeteshk.dot.utils$disable(android.view.View)io.geeteshk.dot.utils/android.view.-view/disable.html
+$dokka.location:io.geeteshk.dot.utils$display(com.google.android.material.floatingactionbutton.FloatingActionButton, kotlin.Boolean)io.geeteshk.dot.utils/com.google.android.material.floatingactionbutton.-floating-action-button/display.html
+$dokka.location:io.geeteshk.dot.utils$enable(android.view.View)io.geeteshk.dot.utils/android.view.-view/enable.html
+$dokka.location:io.geeteshk.dot.utils$onTextChanged(android.widget.EditText, kotlin.Function1((kotlin.String, kotlin.Unit)))io.geeteshk.dot.utils/android.widget.-edit-text/on-text-changed.html
+$dokka.location:io.geeteshk.dot.utils$removeExtraWhitespace(com.google.android.material.textfield.TextInputEditText)io.geeteshk.dot.utils/com.google.android.material.textfield.-text-input-edit-text/remove-extra-whitespace.html
+$dokka.location:io.geeteshk.dot.utils$toMorse(android.text.Editable)io.geeteshk.dot.utils/android.text.-editable/to-morse.html
+$dokka.location:io.geeteshk.dot.utils$toMorse(kotlin.String)io.geeteshk.dot.utils/kotlin.-string/to-morse.html
+io.geeteshk.dot
+io.geeteshk.dot.ui.main
+io.geeteshk.dot.utils
