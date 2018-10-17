@@ -15,10 +15,11 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <color name="colorSurface">#344955</color>
-    <color name="colorPrimary">#263238</color>
-    <color name="colorPrimaryDark">#1C262A</color>
-    <color name="colorAccent">#F9AA33</color>
-    <color name="colorOnSurface">#20FFFFFF</color>
-</resources>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_flashlight">
+
+    <target
+        android:animation="@animator/flashlight_to_stop"
+        android:name="@string/flashlight" />
+
+</animated-vector>

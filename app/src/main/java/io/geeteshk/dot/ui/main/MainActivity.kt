@@ -21,16 +21,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.text.SpannableString
+import android.view.Gravity
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModelProviders
 import com.github.florent37.runtimepermission.kotlin.askPermission
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import io.geeteshk.dot.R
 import io.geeteshk.dot.databinding.ActivityMainBinding
 import io.geeteshk.dot.utils.*
@@ -113,18 +112,26 @@ class MainActivity : AppCompatActivity() {
         // Make our layout visible so the user can begin
         subLayout.visibility = View.VISIBLE
 
-        // Make sure we use vector drawables
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-
         // Ensure FloatingActionButton is hidden on starting
         Handler().postDelayed({
             flashControl.hide()
         }, 100)
 
-        // Setup OnLongClickListener to show licenses
-        flashControl.setOnLongClickListener {
-            startActivity(Intent(this, OssLicensesMenuActivity::class.java))
-            true
+        // Set a listener for our FloatingActionButton to update the state
+        flashControl.setOnClickListener {
+            if (isFlashing) {
+                flashControl.animateVector(this, R.drawable.avd_stop_to_flashlight)
+                stopFlashing()
+            } else {
+                flashControl.animateVector(this, R.drawable.avd_flashlight_to_stop)
+                startFlashing()
+            }
+        }
+
+        // When we scroll down hide the fab so the user can see
+        // what is behind it, scrolling up shows the fab again
+        morseOutputContainer.setOnScrollChangeListener { _: View, _: Int, scrollY: Int, _: Int, oldScrollY: Int ->
+            flashControl.display(scrollY <= oldScrollY)
         }
     }
 
@@ -145,22 +152,15 @@ class MainActivity : AppCompatActivity() {
                 // An empty string will display our default text
                 viewModel.currentSpannable.value = SpannableString(
                         if (it.isBlank()) {
+                            morseOutput.gravity = Gravity.CENTER
                             getString(R.string.text_prompt)
                         } else {
+                            morseOutput.gravity = Gravity.START
                             it.toMorse()
                         }
                 )
             }
         }
-    }
-
-    /**
-     * onClick function for flashControl that changes the state
-     * and kicks off the thread
-     */
-    fun flashControlOnClick(@Suppress("unused_parameter") view: View) {
-        flashControl.setImageResource(if (isFlashing) R.drawable.ic_flashlight else R.drawable.ic_stop)
-        if (isFlashing) stopFlashing() else startFlashing()
     }
 
     /** Used to inject our custom font into the activity */

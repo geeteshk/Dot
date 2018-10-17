@@ -16,10 +16,13 @@
 
 package io.geeteshk.dot.utils
 
+import android.content.Context
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import io.geeteshk.dot.utils.Constants.Companion.SPACE_PATTERN
@@ -65,6 +68,12 @@ fun View.disable() {
 /** Extension to show/hide FloatingActionButton based on a condition */
 fun FloatingActionButton.display(visible: Boolean) {
     if (visible) show() else hide()
+}
+
+fun FloatingActionButton.animateVector(context: Context, resource: Int) {
+    val drawable = ContextCompat.getDrawable(context, resource) as AnimatedVectorDrawable
+    setImageDrawable(drawable)
+    drawable.start()
 }
 
 /** Kotlin DSL implementation of TextWatcher.onTextChanged on EditText*/
