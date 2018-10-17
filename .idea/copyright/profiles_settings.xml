@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="Test" />
+  <settings>
+    <module2copyright>
+      <element module="JustMe" copyright="Test" />
+    </module2copyright>
+  </settings>
 </component>

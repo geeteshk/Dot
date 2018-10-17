@@ -47,31 +47,49 @@ android {
         outputFormat = 'html'
         outputDirectory = 'docs'
     }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include "armeabi-v7a", "arm64-v8a"
+            universalApk false
+        }
+    }
+}
+
+import com.android.build.OutputFile
+
+ext.versionCodes = ['armeabi-v7a': 3, 'arm64-v8a': 4]
+android.applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+        def abiFilter = output.getFilter(OutputFile.ABI)
+        def abiMultiplier = 0
+        if (abiFilter != null) {
+            abiMultiplier = project.ext.versionCodes.get(abiFilter)
+        }
+
+        output.versionCodeOverride =
+                abiMultiplier * 1000 + android.defaultConfig.versionCode
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
-
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     kapt 'androidx.lifecycle:lifecycle-runtime:2.0.0'
-
     implementation 'com.google.android.material:material:1.0.0'
-
     implementation 'com.github.florent37:runtime-permission-kotlin:1.0.5'
-
     implementation 'io.github.inflationx:calligraphy3:3.0.0'
     implementation 'io.github.inflationx:viewpump:1.0.0'
-
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
-
     implementation 'com.google.android.gms:play-services-oss-licenses:16.0.1'
-
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-beta01'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-beta01'
+    androidTestImplementation 'androidx.test:runner:1.1.0-beta02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-beta02'
+    implementation project(':openCVLibrary343')
 }
