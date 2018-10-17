@@ -38,7 +38,7 @@ class Constants {
                 'F' to "..-.",
                 'G' to "--.",
                 'H' to "....",
-                'I' to "build/generated/res/rs",
+                'I' to "..",
                 'J' to ".---",
                 'K' to "-.-",
                 'L' to ".-..",
