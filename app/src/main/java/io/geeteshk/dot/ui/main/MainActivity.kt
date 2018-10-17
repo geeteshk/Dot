@@ -19,6 +19,7 @@ package io.geeteshk.dot.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.text.SpannableString
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -114,6 +115,11 @@ class MainActivity : AppCompatActivity() {
 
         // Make sure we use vector drawables
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+
+        // Ensure FloatingActionButton is hidden on starting
+        Handler().postDelayed({
+            flashControl.hide()
+        }, 100)
 
         // Setup OnLongClickListener to show licenses
         flashControl.setOnLongClickListener {

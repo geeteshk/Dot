@@ -103,7 +103,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:layout_gravity="bottom|end"
-            android:visibility="gone"
             android:onClick="flashControlOnClick"
             app:fabSize="normal"
             app:srcCompat="@drawable/ic_flashlight"
