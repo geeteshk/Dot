@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright 2018 Geetesh Kalakoti
   ~
@@ -14,16 +15,15 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <string name="app_name">Dot</string>
-    <string name="input_prompt">Message</string>
-    <string name="text_prompt">Enter a message!</string>
-    <string name="camera_rationale">The camera permission is needed so your flashlight can be used to send messages.</string>
-    <string name="ask_again">Ask again</string>
-    <string name="action_settings">Settings</string>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <string name="drawer_open">Open drawer</string>
-    <string name="drawer_close">Close drawer</string>
+    <group android:checkableBehavior="single">
 
-    <string name="action_flash">Flashlight</string>
-</resources>
+        <item
+            android:id="@+id/action_send_flash"
+            android:title="@string/action_flash"
+            android:icon="@drawable/ic_action_send_flashlight" />
+
+    </group>
+
+</menu>

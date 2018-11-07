@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.geeteshk.dot.ui.main
+package io.geeteshk.dot.ui.fragment
 
 import android.content.Context
 import android.text.Spannable
@@ -24,7 +24,7 @@ import androidx.lifecycle.ViewModel
 import io.geeteshk.dot.R
 
 /** ViewModel for MainActivity */
-class MainViewModel : ViewModel() {
+class SendFlashViewModel : ViewModel() {
 
     /** Spannable LiveData that is used to update the output */
     lateinit var currentSpannable: MutableLiveData<Spannable>
