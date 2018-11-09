@@ -16,13 +16,10 @@
 
 package io.geeteshk.dot.utils
 
-import android.content.Context
-import android.graphics.drawable.AnimatedVectorDrawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
-import androidx.core.content.ContextCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import io.geeteshk.dot.utils.Constants.Companion.SPACE_PATTERN
@@ -30,7 +27,7 @@ import io.geeteshk.dot.utils.Constants.Companion.englishToMorseCode
 
 /** Removes any spaces with length > 1 in a TextInputEditText */
 fun TextInputEditText.removeExtraWhitespace() {
-    setText(text.toString().replace(SPACE_PATTERN, " "))
+    setText(text.toString().trim().replace(SPACE_PATTERN, " "))
 }
 
 /** Converts a String to morse code by referencing map */
