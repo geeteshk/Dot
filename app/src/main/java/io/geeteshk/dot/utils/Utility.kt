@@ -17,6 +17,7 @@
 package io.geeteshk.dot.utils
 
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
 import android.provider.Settings
 import android.view.View
@@ -57,4 +58,8 @@ fun showRationale(result: PermissionResult, activity: AppCompatActivity, layout:
                 }
                 .show()
     }
+}
+
+fun dpToPx(dp: Int): Int {
+    return (dp * Resources.getSystem().displayMetrics.density).toInt()
 }

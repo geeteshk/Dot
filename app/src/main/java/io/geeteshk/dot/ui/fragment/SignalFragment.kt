@@ -22,6 +22,7 @@ import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -107,6 +108,10 @@ class SignalFragment : RestoreStateFragment() {
         rootView.morseOutputContainer.setOnScrollChangeListener { _: View, _: Int, scrollY: Int, _: Int, oldScrollY: Int ->
             activity!!.fab.display(scrollY <= oldScrollY)
         }
+
+        // Workaround for actionDone to work correctly
+        rootView.morseInput.setRawInputType(rootView.morseInput.inputType
+                and(EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE.inv()))
 
         // Thank you Kotlin DSL
         rootView.morseInput.onTextChanged { it: String ->

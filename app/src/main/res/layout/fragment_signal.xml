@@ -50,7 +50,7 @@
                 android:gravity="start|top"
                 android:importantForAutofill="no"
                 android:inputType="textNoSuggestions|textVisiblePassword"
-                android:privateImeOptions="nm"
+                android:imeOptions="actionDone"
                 android:digits="0123456789qwertzuiopasdfghjklyxcvbnmQWERTZUIOPASDFGHJKLYXCVBNM "
                 android:hint="@string/input_prompt" />
 
