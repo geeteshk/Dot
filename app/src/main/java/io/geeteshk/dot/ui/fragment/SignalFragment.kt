@@ -23,25 +23,21 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.appbar.AppBarLayout
 import io.geeteshk.dot.R
-import io.geeteshk.dot.databinding.FragmentSendFlashBinding
-import io.geeteshk.dot.ui.main.MainActivity
+import io.geeteshk.dot.databinding.FragmentSignalBinding
 import io.geeteshk.dot.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_send_flash.*
-import kotlinx.android.synthetic.main.fragment_send_flash.view.*
+import kotlinx.android.synthetic.main.fragment_signal.view.*
 
-class SendFlashFragment : Fragment() {
+class SignalFragment : Fragment() {
 
     // We have a ViewModel so our data can survive configuration changes
-    private lateinit var viewModel: SendFlashViewModel
+    private lateinit var viewModel: SignalViewModel
 
     // Thread to perform morse code flashing
     private lateinit var flashThread: Thread
@@ -61,12 +57,12 @@ class SendFlashFragment : Fragment() {
         flashlight = Flashlight(activity!!)
 
         // Initialize our ViewModel and our Spannable so that it is not null
-        viewModel = ViewModelProviders.of(this).get(SendFlashViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(SignalViewModel::class.java)
         viewModel.initSpannable(activity!!)
 
         // Setup our data binding and set the correct lifecycle owner
         // so we can observe LiveData properly
-        val binding = FragmentSendFlashBinding.inflate(
+        val binding = FragmentSignalBinding.inflate(
                 inflater, container, false)
         binding.setLifecycleOwner(this)
         binding.viewModel = viewModel
@@ -78,7 +74,7 @@ class SendFlashFragment : Fragment() {
         lifecycle.addObserver(StateObserver())
 
         // Make our layout visible so the user can begin
-        rootView.subLayout.visibility = View.VISIBLE
+        rootView.mainLayout.visibility = View.VISIBLE
 
         // Ensure FloatingActionButton is hidden on starting
         Handler().postDelayed({
@@ -86,11 +82,11 @@ class SendFlashFragment : Fragment() {
         }, 100)
 
         // Set a listener for our FloatingActionButton to update the state
-        activity!!.fab.setOnClickListener {
+        activity?.fab?.setOnClickListener {
             if (isFlashing) {
                 stopFlashing()
             } else {
-                activity!!.fab.animateVector(activity!!, R.drawable.avd_flashlight_to_stop)
+                activity!!.fab.setImageResource(R.drawable.ic_stop)
 
                 // Update state
                 isFlashing = true
@@ -124,10 +120,8 @@ class SendFlashFragment : Fragment() {
                 // An empty string will display our default text
                 viewModel.currentSpannable.value = SpannableString(
                         if (it.isBlank()) {
-                            rootView.morseOutput.gravity = Gravity.CENTER
                             getString(R.string.text_prompt)
                         } else {
-                            rootView.morseOutput.gravity = Gravity.START
                             it.toMorse()
                         }
                 )
@@ -138,7 +132,7 @@ class SendFlashFragment : Fragment() {
     }
 
     private fun stopFlashing() {
-        activity?.fab?.animateVector(activity!!, R.drawable.avd_stop_to_flashlight)
+        activity?.fab?.setImageResource(R.drawable.ic_flashlight)
 
         // Update state
         isFlashing = false

@@ -15,11 +15,7 @@
   ~ limitations under the License.
   -->
 
-<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:drawable="@drawable/ic_flashlight">
-
-    <target
-        android:animation="@animator/flashlight_to_stop"
-        android:name="@string/flashlight" />
-
-</animated-vector>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/colorAccent" android:state_selected="true" />
+    <item android:color="@android:color/white" />
+</selector>

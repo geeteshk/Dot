@@ -24,7 +24,7 @@ import androidx.lifecycle.ViewModel
 import io.geeteshk.dot.R
 
 /** ViewModel for MainActivity */
-class SendFlashViewModel : ViewModel() {
+class SignalViewModel : ViewModel() {
 
     /** Spannable LiveData that is used to update the output */
     lateinit var currentSpannable: MutableLiveData<Spannable>

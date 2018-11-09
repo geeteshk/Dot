@@ -15,11 +15,6 @@
   ~ limitations under the License.
   -->
 
-<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:drawable="@drawable/ic_stop">
-
-    <target
-        android:animation="@animator/stop_to_flashlight"
-        android:name="@string/stop" />
-
-</animated-vector>
+<item
+    title="@string/action_signal"
+    icon="@drawable/ic_action_signal" />

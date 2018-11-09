@@ -70,12 +70,6 @@ fun FloatingActionButton.display(visible: Boolean) {
     if (visible) show() else hide()
 }
 
-fun FloatingActionButton.animateVector(context: Context, resource: Int) {
-    val drawable = ContextCompat.getDrawable(context, resource) as AnimatedVectorDrawable
-    setImageDrawable(drawable)
-    drawable.start()
-}
-
 /** Kotlin DSL implementation of TextWatcher.onTextChanged on EditText*/
 fun EditText.onTextChanged(onTextChanged: (String) -> Unit) {
     addTextChangedListener(object : TextWatcher {
