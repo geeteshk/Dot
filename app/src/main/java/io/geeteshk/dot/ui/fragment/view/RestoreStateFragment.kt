@@ -14,24 +14,13 @@
  * limitations under the License.
  */
 
-package io.geeteshk.dot.ui.adapter
+package io.geeteshk.dot.ui.fragment.view
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import io.geeteshk.dot.ui.fragment.SignalFragment
-import io.geeteshk.dot.view.tabmenu.TabMenu
 
-class FragmentAdapter(fm: FragmentManager, var menu: TabMenu) : FragmentPagerAdapter(fm) {
+open class RestoreStateFragment : Fragment() {
 
-    override fun getItem(position: Int): Fragment {
-        return when (position) {
-            0 -> SignalFragment()
-            else -> Fragment()
-        }
+    open fun restore() {
+        // Empty body
     }
-
-    override fun getPageTitle(position: Int) = menu.getItem(position).getTitle()
-
-    override fun getCount() = menu.size()
 }

@@ -19,22 +19,22 @@ package io.geeteshk.dot.ui.fragment
 import android.os.Bundle
 import android.os.Handler
 import android.text.SpannableString
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModelProviders
 import io.geeteshk.dot.R
 import io.geeteshk.dot.databinding.FragmentSignalBinding
+import io.geeteshk.dot.ui.fragment.view.RestoreStateFragment
 import io.geeteshk.dot.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_signal.*
 import kotlinx.android.synthetic.main.fragment_signal.view.*
 
-class SignalFragment : Fragment() {
+class SignalFragment : RestoreStateFragment() {
 
     // We have a ViewModel so our data can survive configuration changes
     private lateinit var viewModel: SignalViewModel
@@ -78,7 +78,7 @@ class SignalFragment : Fragment() {
 
         // Ensure FloatingActionButton is hidden on starting
         Handler().postDelayed({
-            activity!!.fab.hide()
+            activity?.fab?.hide()
         }, 100)
 
         // Set a listener for our FloatingActionButton to update the state
@@ -129,6 +129,11 @@ class SignalFragment : Fragment() {
         }
 
         return rootView
+    }
+
+    override fun restore() {
+        if (isFlashing) stopFlashing()
+        view?.morseInput?.requestFocus()
     }
 
     private fun stopFlashing() {

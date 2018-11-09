@@ -20,13 +20,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.github.florent37.runtimepermission.kotlin.askPermission
 import io.geeteshk.dot.R
-import io.geeteshk.dot.ui.adapter.FragmentAdapter
+import io.geeteshk.dot.ui.fragment.SignalFragment
+import io.geeteshk.dot.ui.fragment.view.RestoreStateFragment
 import io.geeteshk.dot.utils.Constants.Companion.RC_SETTINGS
-import io.geeteshk.dot.view.tabmenu.TabMenuInflater
 import io.geeteshk.dot.utils.showRationale
-import io.geeteshk.dot.view.tabmenu.TabMenu
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -57,15 +58,28 @@ class MainActivity : AppCompatActivity() {
 
     /** Sets up the tabs and pager */
     private fun setupUI() {
-        val tabMenu = TabMenu()
-        val inflater = TabMenuInflater()
-        inflater.inflate(resources, tabMenu)
+        val viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel.currentFragment.observe(this, Observer {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, it)
+                    .commit()
+        })
 
-        val adapter = FragmentAdapter(supportFragmentManager, tabMenu)
-        viewPager.adapter = adapter
+        bottomNavigation.setOnNavigationItemSelectedListener {
+            viewModel.currentFragment.value = when (it.itemId) {
+                R.id.action_signal -> SignalFragment()
+                else -> RestoreStateFragment()
+            }
 
-        tabs.setupWithViewPager(viewPager)
-        tabMenu.setupIcons(tabs)
+            true
+        }
+
+        bottomNavigation.setOnNavigationItemReselectedListener {
+            viewModel.currentFragment.value?.restore()
+        }
+
+        viewModel.currentFragment.value = SignalFragment()
+        bottomNavigation.selectedItemId = R.id.action_signal
     }
 
     /** Used to inject our custom font into the activity */

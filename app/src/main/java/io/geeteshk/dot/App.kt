@@ -22,10 +22,18 @@ import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
 
-/** Custom application class */
-@Suppress("unused") class App : Application() {
+/**
+ * A custom application class used to inject LeakCanary for debug
+ * builds and our rounded font throughout the app using Calligraphy
+ */
+class App : Application() {
 
-    /** Application is created, we can do our injection */
+    /**
+     * Called when the Application is created
+     *
+     * This is where we do our installation of LeakCanary
+     * and Calligraphy fonts
+     */
     override fun onCreate() {
         super.onCreate()
 
