@@ -19,9 +19,6 @@ package io.geeteshk.dot.utils
 /** Constant values that are used throughout the app */
 class Constants {
     companion object {
-        /** The duration of a single dot in morse code */
-        const val DOT_DELAY = 250
-
         /** Request code used when opening app Settings */
         const val RC_SETTINGS = 123
 

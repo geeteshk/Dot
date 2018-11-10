@@ -229,16 +229,25 @@ class SignalFragment : RestoreStateFragment() {
                     val delay = getDelay(element)
 
                     // If it's a space or unknown character we ignore it
-                    if (delay == -1) return@forEachIndexed
+                    if (delay == -1) {
+                        // Check if we are delaying a word or in between a letter
+                        if (view!!.rootView.morseInput.text.toString()[numSpaces] == ' ') {
+                            delay(WORD_SPACE_LENGTH)
+                        } else {
+                            delay(LETTER_SPACE_LENGTH)
+                        }
+
+                        return@forEachIndexed
+                    }
 
                     // Update the spans and enable the flash for the respective delay
                     spanner.addCharSpans(viewModel.currentSpannable, index)
                     flashlight.flashAndWait(true, delay)
 
-                    // Clear the spans and wait a 'dot length' before
+                    // Clear the spans and wait space length before
                     // moving onto the next character
                     spanner.removeSpans(viewModel.currentSpannable)
-                    flashlight.flashAndWait(false, Constants.DOT_DELAY)
+                    flashlight.flashAndWait(false, PART_SPACE_LENGTH)
                 }
 
                 // We have finished looping so we can cleanup
@@ -270,17 +279,20 @@ class SignalFragment : RestoreStateFragment() {
         /** Utility to get how long to wait for a given character */
         private fun getDelay(char: Char): Int {
             return when (char) {
-                '.' -> Constants.DOT_DELAY
-                '-' -> Constants.DOT_DELAY * 3
-                ' ' -> {
-                    // Since we return on space we need to delay here
-                    delay(Constants.DOT_DELAY)
-
-                    -1
-                }
-
+                '.' -> DOT_LENGTH
+                '-' -> DASH_LENGTH
+                ' ' -> -1
                 else -> -1
             }
         }
+    }
+
+    companion object {
+        private const val TIME_UNIT = 250
+        const val DOT_LENGTH = TIME_UNIT
+        const val DASH_LENGTH = TIME_UNIT * 3
+        const val PART_SPACE_LENGTH = TIME_UNIT
+        const val LETTER_SPACE_LENGTH = TIME_UNIT * 3
+        const val WORD_SPACE_LENGTH = TIME_UNIT * 7
     }
 }
