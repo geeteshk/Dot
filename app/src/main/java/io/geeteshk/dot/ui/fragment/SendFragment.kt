@@ -229,6 +229,10 @@ class SendFragment : RestoreStateFragment() {
 
                     // If it's a space or unknown character we ignore it
                     if (delay == -1) {
+                        activity!!.runOnUiThread {
+                            spanner.removeSpans(view!!.rootView.morseInput.text)
+                        }
+
                         // Check if we are delaying a word or in between a letter
                         if (view!!.rootView.morseInput.text.toString()[numSpaces] == ' ') {
                             delay(WORD_SPACE_LENGTH)
