@@ -18,7 +18,7 @@
 <resources>
     <color name="colorSurface">#344955</color>
     <color name="colorPrimary">#263238</color>
-    <color name="colorPrimaryDark">#263328</color>
+    <color name="colorPrimaryDark">#263238</color>
     <color name="colorAccent">#F9AA33</color>
     <color name="colorOnSurface">#20FFFFFF</color>
 </resources>

@@ -27,4 +27,6 @@
 
     <string name="action_flash">Flashlight</string>
     <string name="action_send">Send</string>
+    <string name="action_lexicon">Lexicon</string>
+    <string name="action_receive">Receive</string>
 </resources>
