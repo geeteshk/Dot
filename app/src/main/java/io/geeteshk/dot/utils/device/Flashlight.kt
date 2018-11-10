@@ -14,28 +14,31 @@
  * limitations under the License.
  */
 
-package io.geeteshk.dot.utils
+package io.geeteshk.dot.utils.device
 
 import android.content.Context
 import android.hardware.camera2.CameraManager
+import io.geeteshk.dot.R
+import io.geeteshk.dot.utils.delay
 
 /** Utility class to control device Flashlight */
-class Flashlight(private var context: Context) {
+class Flashlight(private var context: Context) : OutputDevice() {
+
+    override val enableRes: Int
+        get() = R.drawable.ic_flashlight
+
+    override val disableRes: Int
+        get() = R.drawable.ic_stop
 
     // Camera service
     private val camera: CameraManager
         get() = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
     /** Enables/disables device flash */
-    fun flash(enabled: Boolean) {
+    override fun output(state: Boolean) {
         // First camera is most likely to be main camera
         val cameraId = camera.cameraIdList[0]
-        camera.setTorchMode(cameraId, enabled)
-    }
-
-    /** Updates device flash and sleeps thread for given time */
-    fun flashAndWait(enabled: Boolean, period: Int) {
-        flash(enabled)
-        delay(period)
+        camera.setTorchMode(cameraId, state
+        )
     }
 }

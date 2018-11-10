@@ -31,6 +31,8 @@ import io.geeteshk.dot.R
 import io.geeteshk.dot.databinding.FragmentSendBinding
 import io.geeteshk.dot.ui.fragment.view.RestoreStateFragment
 import io.geeteshk.dot.utils.*
+import io.geeteshk.dot.utils.device.Flashlight
+import io.geeteshk.dot.utils.device.OutputDevice
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_send.view.*
 
@@ -40,21 +42,21 @@ class SendFragment : RestoreStateFragment() {
     private lateinit var viewModel: SendViewModel
 
     // Thread to perform morse code flashing
-    private lateinit var flashThread: Thread
+    private lateinit var outputThread: Thread
 
     // Utility class for managing our spans
     private lateinit var spanner: Spanner
 
-    // Utility class for enabling and disabling the flashlight
-    private lateinit var flashlight: Flashlight
+    // Utility class for enabling and disabling the output device
+    private lateinit var device: OutputDevice
 
     // Our current state
-    private var isFlashing = false
+    private var isOutputting = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Initialize our utilities
         spanner = Spanner(activity!!)
-        flashlight = Flashlight(activity!!)
+        device = Flashlight(activity!!)
 
         // Initialize our ViewModel and our Spannable so that it is not null
         viewModel = ViewModelProviders.of(this).get(SendViewModel::class.java)
@@ -83,13 +85,13 @@ class SendFragment : RestoreStateFragment() {
 
         // Set a listener for our FloatingActionButton to update the state
         activity?.fab?.setOnClickListener {
-            if (isFlashing) {
-                stopFlashing()
+            if (isOutputting) {
+                stopOutputting()
             } else {
-                activity!!.fab.setImageResource(R.drawable.ic_stop)
+                activity!!.fab.setImageResource(device.disableRes)
 
                 // Update state
-                isFlashing = true
+                isOutputting = true
 
                 // Make all spaces in input single spaced and prepare
                 // LiveData causes output to update automatically
@@ -97,8 +99,8 @@ class SendFragment : RestoreStateFragment() {
                 rootView.morseInput.disable()
 
                 // Kick off our flashing thread and sit back
-                flashThread = Thread(MessageRunnable(rootView.morseInput.text!!.toMorse()))
-                flashThread.start()
+                outputThread = Thread(MessageRunnable(rootView.morseInput.text!!.toMorse()))
+                outputThread.start()
             }
         }
 
@@ -115,7 +117,7 @@ class SendFragment : RestoreStateFragment() {
         // Thank you Kotlin DSL
         rootView.morseInput.onTextChanged { it: String ->
             // This check is here so we don't alter the output while we
-            // are flashing due to all the spans being thrown around
+            // are outputting due to all the spans being thrown around
             if (rootView.morseInput.isEnabled) {
                 // Hide the FloatingActionButton when there's no text
                 activity!!.fab.display(!it.isBlank())
@@ -136,25 +138,25 @@ class SendFragment : RestoreStateFragment() {
     }
 
     override fun restore() {
-        if (isFlashing) stopFlashing()
+        if (isOutputting) stopOutputting()
         view?.morseInput?.requestFocus()
     }
 
-    private fun stopFlashing() {
-        activity?.fab?.setImageResource(R.drawable.ic_flashlight)
+    private fun stopOutputting() {
+        activity?.fab?.setImageResource(device.enableRes)
 
         // Update state
-        isFlashing = false
+        isOutputting = false
 
         // Allow user to enter input again
         view?.morseInput?.enable()
 
-        // Kill our flashing thread if it's still running
-        if (flashThread.isAlive)
-            flashThread.interrupt()
+        // Kill our outputting thread if it's still running
+        if (outputThread.isAlive)
+            outputThread.interrupt()
 
-        // Ensure our flashlight has been disabled
-        flashlight.flash(false)
+        // Ensure our output device has been disabled
+        device.output(false)
     }
 
     /**
@@ -169,19 +171,19 @@ class SendFragment : RestoreStateFragment() {
         /** On resuming we reset the drawable image to its correct icon */
         @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
         fun onResume() {
-            activity?.fab?.setImageResource(R.drawable.ic_flashlight)
+            activity?.fab?.setImageResource(device.enableRes)
         }
 
         /** On pausing make sure we stop flashing */
         @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
         fun onPause() {
-            if (isFlashing) stopFlashing()
+            if (isOutputting) stopOutputting()
         }
     }
 
     /**
-     * A Runnable that is run by our flashing Thread that takes care of
-     * flashing the morse code with the correct timings and delays. There
+     * A Runnable that is run by our outputting Thread that takes care of
+     * outputting the morse code with the correct timings and delays. There
      * is probably a more optimal way of doing this
      */
     inner class MessageRunnable(private var currentString: String) : Runnable {
@@ -194,7 +196,7 @@ class SendFragment : RestoreStateFragment() {
         // Used to ensure that we update input span correctly
         private var prevChar = '.'
 
-        /** Begin flashing in here, dirty stuff here, look away */
+        /** Begin outputting in here, dirty stuff here, look away */
         override fun run() {
             try {
                 // Begin by setting up our input span on first char
@@ -243,23 +245,23 @@ class SendFragment : RestoreStateFragment() {
                         return@forEachIndexed
                     }
 
-                    // Update the spans and enable the flash for the respective delay
+                    // Update the spans and enable the output for the respective delay
                     spanner.addCharSpans(viewModel.currentSpannable, index)
-                    flashlight.flashAndWait(true, delay)
+                    device.outputAndWait(true, delay)
 
                     // Clear the spans and wait space length before
                     // moving onto the next character
                     spanner.removeSpans(viewModel.currentSpannable)
-                    flashlight.flashAndWait(false, PART_SPACE_LENGTH)
+                    device.outputAndWait(false, PART_SPACE_LENGTH)
                 }
 
                 // We have finished looping so we can cleanup
                 activity!!.runOnUiThread {
                     // Restore the FloatingActionButton
-                    activity!!.fab.setImageResource(R.drawable.ic_flashlight)
+                    activity!!.fab.setImageResource(device.enableRes)
 
-                    // Ensure we stop flashing and update our state
-                    stopFlashing()
+                    // Ensure we stop outputting and update our state
+                    stopOutputting()
 
                     // Clear away our spans
                     spanner.removeSpans(viewModel.currentSpannable)
@@ -269,8 +271,8 @@ class SendFragment : RestoreStateFragment() {
                 // This is supposed to happen when the FloatingActionButton
                 // is clicked but the Thread may be interrupted due to other reasons?
                 activity!!.runOnUiThread {
-                    // Ensure the flashlight is off
-                    flashlight.flash(false)
+                    // Ensure the output device is disabled
+                    device.output(false)
 
                     // Clear away our spans
                     spanner.removeSpans(viewModel.currentSpannable)
