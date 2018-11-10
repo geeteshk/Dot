@@ -21,7 +21,7 @@
     <data>
         <variable
             name="viewModel"
-            type="io.geeteshk.dot.ui.fragment.SignalViewModel" />
+            type="io.geeteshk.dot.ui.fragment.SendViewModel" />
     </data>
 
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"

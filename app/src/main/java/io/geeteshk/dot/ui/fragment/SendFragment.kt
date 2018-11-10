@@ -28,17 +28,16 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ViewModelProviders
 import io.geeteshk.dot.R
-import io.geeteshk.dot.databinding.FragmentSignalBinding
+import io.geeteshk.dot.databinding.FragmentSendBinding
 import io.geeteshk.dot.ui.fragment.view.RestoreStateFragment
 import io.geeteshk.dot.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_signal.*
-import kotlinx.android.synthetic.main.fragment_signal.view.*
+import kotlinx.android.synthetic.main.fragment_send.view.*
 
-class SignalFragment : RestoreStateFragment() {
+class SendFragment : RestoreStateFragment() {
 
     // We have a ViewModel so our data can survive configuration changes
-    private lateinit var viewModel: SignalViewModel
+    private lateinit var viewModel: SendViewModel
 
     // Thread to perform morse code flashing
     private lateinit var flashThread: Thread
@@ -58,12 +57,12 @@ class SignalFragment : RestoreStateFragment() {
         flashlight = Flashlight(activity!!)
 
         // Initialize our ViewModel and our Spannable so that it is not null
-        viewModel = ViewModelProviders.of(this).get(SignalViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(SendViewModel::class.java)
         viewModel.initSpannable(activity!!)
 
         // Setup our data binding and set the correct lifecycle owner
         // so we can observe LiveData properly
-        val binding = FragmentSignalBinding.inflate(
+        val binding = FragmentSendBinding.inflate(
                 inflater, container, false)
         binding.setLifecycleOwner(this)
         binding.viewModel = viewModel

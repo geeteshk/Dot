@@ -26,5 +26,5 @@
     <string name="drawer_close">Close drawer</string>
 
     <string name="action_flash">Flashlight</string>
-    <string name="action_signal">Signal</string>
+    <string name="action_send">Send</string>
 </resources>

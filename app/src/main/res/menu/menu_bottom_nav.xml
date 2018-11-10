@@ -18,8 +18,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_signal"
-        android:title="@string/action_signal"
-        android:icon="@drawable/ic_action_signal" />
+        android:id="@+id/action_send"
+        android:title="@string/action_send"
+        android:icon="@drawable/ic_action_send" />
 
 </menu>

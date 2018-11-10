@@ -24,7 +24,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.github.florent37.runtimepermission.kotlin.askPermission
 import io.geeteshk.dot.R
-import io.geeteshk.dot.ui.fragment.SignalFragment
+import io.geeteshk.dot.ui.fragment.SendFragment
 import io.geeteshk.dot.ui.fragment.view.RestoreStateFragment
 import io.geeteshk.dot.utils.Constants.Companion.RC_SETTINGS
 import io.geeteshk.dot.utils.showRationale
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigation.setOnNavigationItemSelectedListener {
             viewModel.currentFragment.value = when (it.itemId) {
-                R.id.action_signal -> SignalFragment()
+                R.id.action_send -> SendFragment()
                 else -> RestoreStateFragment()
             }
 
@@ -78,8 +78,8 @@ class MainActivity : AppCompatActivity() {
             viewModel.currentFragment.value?.restore()
         }
 
-        viewModel.currentFragment.value = SignalFragment()
-        bottomNavigation.selectedItemId = R.id.action_signal
+        viewModel.currentFragment.value = SendFragment()
+        bottomNavigation.selectedItemId = R.id.action_send
     }
 
     /** Used to inject our custom font into the activity */
